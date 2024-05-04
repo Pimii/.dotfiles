@@ -1,0 +1,55 @@
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+vim.g.markdown_recommended_style = 0
+
+local opt = vim.opt
+
+opt.clipboard = "unnamedplus"
+opt.completeopt = "menu,menuone,noselect"
+opt.conceallevel = 3
+opt.cursorline = true
+opt.expandtab = true
+opt.formatoptions = "jcroqlnt" -- tcqj
+opt.grepformat = "%f:%l:%c:%m"
+opt.grepprg = "rg --vimgrep"
+opt.ignorecase = true
+opt.inccommand = "nosplit"
+opt.laststatus = 3
+opt.list = true
+opt.mouse = "c"
+opt.number = true
+opt.pumblend = 10
+opt.pumheight = 10
+opt.relativenumber = true
+opt.scrolloff = 4
+opt.shiftround = true
+opt.shiftwidth = 2
+opt.shortmess:append({ W = true, I = true, c = true, C = true })
+opt.showmode = false
+opt.sidescrolloff = 8
+opt.signcolumn = "yes"
+opt.smartcase = true
+opt.smartindent = true
+opt.spelllang = { "en" }
+opt.splitbelow = true
+opt.splitkeep = "screen"
+opt.splitright = true
+opt.tabstop = 2
+opt.termguicolors = true
+opt.timeoutlen = 300
+opt.undofile = true
+opt.undolevels = 1000
+opt.updatetime = 4000
+opt.virtualedit = "block"
+opt.wildmode = "longest:full,full"
+opt.winminwidth = 5
+opt.wrap = false
+opt.fillchars = {
+  foldopen = "",
+  foldclose = "",
+  -- fold = "⸱",
+  fold = " ",
+  foldsep = " ",
+  diff = "╱",
+  eob = " ",
+}
