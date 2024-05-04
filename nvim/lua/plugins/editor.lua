@@ -212,7 +212,6 @@ return {
       { "<leader>sm",      "<cmd>Telescope man_pages<cr>",                                desc = "man pages" },
       { "<leader>sm",      "<cmd>Telescope marks<cr>",                                    desc = "jump to mark" },
       { "<leader>so",      "<cmd>Telescope vim_options<cr>",                              desc = "options" },
-      { "<leader>sr",      "<cmd>Telescope resume<cr>",                                   desc = "resume" },
       {
         "<leader>sw",
         function()
@@ -430,5 +429,76 @@ return {
       { "<leader>st", "<cmd>TodoTelescope<cr>",                            desc = "Todo" },
       { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>",    desc = "Todo/Fix/Fixme" },
     },
+  },
+  {
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {
+      settings = {
+        save_on_toggle = true,
+        save_on_ui_cloase = true,
+      }
+    },
+    config = function(_, opts)
+      require("harpoon"):setup(opts)
+    end,
+    keys = function(_, keys)
+      local function toggle_telescope(harpoon_files)
+        local finder = function()
+          local paths = {}
+          for _, item in ipairs(harpoon_files.items) do
+            table.insert(paths, item.value)
+          end
+
+          return require("telescope.finders").new_table({
+            results = paths,
+          })
+        end
+
+        require("telescope.pickers").new({}, {
+          prompt_title = "Harpoon",
+          finder = finder(),
+          previewer = false,
+          sorter = require("telescope.config").values.generic_sorter({}),
+          layout_config = {
+            height = 0.4,
+            width = 0.5,
+            prompt_position = "top",
+            preview_cutoff = 120,
+          },
+          attach_mappings = function(prompt_bufnr, map)
+            map("i", "<C-d>", function()
+              local state = require("telescope.actions.state")
+              local selected_entry = state.get_selected_entry()
+              local current_picker = state.get_current_picker(prompt_bufnr)
+
+              table.remove(harpoon_files.items, selected_entry.index)
+              current_picker:refresh(finder())
+            end)
+            return true
+          end,
+        }):find()
+      end
+
+      local mappings = {
+        { "<leader>a", function() require("harpoon"):list():add() end },
+        { "<C-e>",     function() toggle_telescope(require("harpoon"):list()) end },
+
+        { "<F1>",      function() require("harpoon"):list():select(1) end },
+        { "<F2>",      function() require("harpoon"):list():select(2) end },
+        { "<F3>",      function() require("harpoon"):list():select(3) end },
+        { "<F4>",      function() require("harpoon"):list():select(4) end },
+        { "<F5>",      function() require("harpoon"):list():select(5) end },
+        { "<F6>",      function() require("harpoon"):list():select(6) end },
+        { "<F7>",      function() require("harpoon"):list():select(7) end },
+        { "<F8>",      function() require("harpoon"):list():select(8) end },
+
+        -- Toggle previous & next buffers stored within Harpoon list
+        { "<C-q>",     function() require("harpoon"):list():prev() end },
+        { "<C-s>",     function() require("harpoon"):list():next() end },
+      }
+      return vim.list_extend(mappings, keys)
+    end,
   },
 }
