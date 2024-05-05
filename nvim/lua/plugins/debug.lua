@@ -1,10 +1,12 @@
 vim.api.nvim_create_user_command("DapExe", function(args)
   vim.g.dap_exe_file = args.fargs[1]
+  vim.notify("has been set as dap executable.", args.fargs[1])
 end, {
   complete = "file",
   nargs = 1,
   desc = "Set exe file path for dap",
 })
+
 local function get_args(config)
   local args = type(config.args) == "function" and (config.args() or {}) or config.args or {}
   config = vim.deepcopy(config)
@@ -233,12 +235,16 @@ return {
         args = {},
         cwd = "${workspaceFolder}",
         program = function()
+          local path = vim.fn.getcwd() .. "/"
           if vim.g.dap_exe_file then
-            return vim.fn.getcwd() .. "/" .. vim.g.dap_exe_file
+            return path .. vim.g.dap_exe_file
           end
-          vim.notify("dap_exe_file not specified")
-          return vim.ui.input({ complete = "file", prompt = "Path to executable: " }, function(input)
-            return vim.fn.getcwd() .. "/" .. input
+          return coroutine.create(function(coro)
+            vim.notify("dap_exe_file not specified. Use DapExe command to not have to type exe file every time")
+            vim.ui.input({ completion = "file", prompt = "Path to executable: " }, function(input)
+              path = path .. input
+              coroutine.resume(coro, path)
+            end)
           end)
         end,
       },
