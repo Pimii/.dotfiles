@@ -8,7 +8,7 @@ local icons = require("config.constants").icons
 
 return {
   {
-    'echasnovski/mini.indentscope',
+    "echasnovski/mini.indentscope",
     version = false,
     opts = {
       symbol = "╎",
@@ -34,30 +34,6 @@ return {
       end,
     },
   },
-  -- {
-  --   "rcarriga/nvim-notify",
-  --   keys = {
-  --     {
-  --       "<leader>un",
-  --       function()
-  --         require("notify").dismiss({ silent = true, pending = true })
-  --       end,
-  --       desc = "Dismiss all Notifications",
-  --     },
-  --   },
-  --   opts = {
-  --     timeout = 1000,
-  --     max_height = function()
-  --       return math.floor(vim.o.lines * 0.75)
-  --     end,
-  --     max_width = function()
-  --       return math.floor(vim.o.columns * 0.75)
-  --     end,
-  --     on_open = function(win)
-  --       vim.api.nvim_win_set_config(win, { zindex = 100 })
-  --     end,
-  --   },
-  -- },
   {
     "stevearc/dressing.nvim",
     lazy = true,
@@ -86,26 +62,34 @@ return {
       end
     end,
     opts = function()
-      local custom_fname = require('lualine.components.filename'):extend()
-      local highlight = require 'lualine.highlight'
-      local default_status_colors = { saved = '#76946A', modified = '#938056' }
+      local custom_fname = require("lualine.components.filename"):extend()
+      local highlight = require("lualine.highlight")
+      local default_status_colors = { saved = "#76946A", modified = "#938056" }
 
       function custom_fname:init(options)
         custom_fname.super.init(self, options)
         self.status_colors = {
           saved = highlight.create_component_highlight_group(
-            { bg = default_status_colors.saved }, 'filename_status_saved', self.options),
+            { bg = default_status_colors.saved },
+            "filename_status_saved",
+            self.options
+          ),
           modified = highlight.create_component_highlight_group(
-            { bg = default_status_colors.modified }, 'filename_status_modified', self.options),
+            { bg = default_status_colors.modified },
+            "filename_status_modified",
+            self.options
+          ),
         }
-        if self.options.color == nil then self.options.color = '' end
+        if self.options.color == nil then
+          self.options.color = ""
+        end
       end
 
       function custom_fname:update_status()
         local data = custom_fname.super.update_status(self)
-        data = highlight.component_format_highlight(vim.bo.modified
-          and self.status_colors.modified
-          or self.status_colors.saved) .. data
+        data = highlight.component_format_highlight(
+          vim.bo.modified and self.status_colors.modified or self.status_colors.saved
+        ) .. data
         return data
       end
 
@@ -134,7 +118,7 @@ return {
                 hint = icons.diagnostics.Hint,
               },
             },
-            { "filetype",  icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+            { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
             { custom_fname },
           },
           lualine_x = {
@@ -169,7 +153,7 @@ return {
             },
           },
           lualine_y = {
-            { "progress", separator = " ",                  padding = { left = 1, right = 0 } },
+            { "progress", separator = " ", padding = { left = 1, right = 0 } },
             { "location", padding = { left = 0, right = 1 } },
           },
           lualine_z = {
@@ -189,6 +173,7 @@ return {
     opts = {
       views = {
         mini = {
+          timeout = 3000,
           border = {
             style = "rounded",
           },
@@ -222,16 +207,69 @@ return {
       },
     },
     keys = {
-      { "<S-Enter>",   function() require("noice").redirect(vim.fn.getcmdline()) end,                 mode = "c",                 desc = "Redirect Cmdline" },
-      { "<leader>snl", function() require("noice").cmd("last") end,                                   desc = "Noice Last Message" },
-      { "<leader>snh", function() require("noice").cmd("history") end,                                desc = "Noice History" },
-      { "<leader>sna", function() require("noice").cmd("all") end,                                    desc = "Noice All" },
-      { "<leader>snd", function() require("noice").cmd("dismiss") end,                                desc = "Dismiss All" },
-      { "<c-f>",       function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end,  silent = true,              expr = true,              desc = "Scroll Forward",  mode = { "i", "n", "s" } },
-      { "<c-b>",       function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true,              expr = true,              desc = "Scroll Backward", mode = { "i", "n", "s" } },
+      {
+        "<S-Enter>",
+        function()
+          require("noice").redirect(vim.fn.getcmdline())
+        end,
+        mode = "c",
+        desc = "Redirect Cmdline",
+      },
+      {
+        "<leader>snl",
+        function()
+          require("noice").cmd("last")
+        end,
+        desc = "Noice Last Message",
+      },
+      {
+        "<leader>snh",
+        function()
+          require("noice").cmd("history")
+        end,
+        desc = "Noice History",
+      },
+      {
+        "<leader>sna",
+        function()
+          require("noice").cmd("all")
+        end,
+        desc = "Noice All",
+      },
+      {
+        "<leader>snd",
+        function()
+          require("noice").cmd("dismiss")
+        end,
+        desc = "Dismiss All",
+      },
+      {
+        "<c-f>",
+        function()
+          if not require("noice.lsp").scroll(4) then
+            return "<c-f>"
+          end
+        end,
+        silent = true,
+        expr = true,
+        desc = "Scroll Forward",
+        mode = { "i", "n", "s" },
+      },
+      {
+        "<c-b>",
+        function()
+          if not require("noice.lsp").scroll(-4) then
+            return "<c-b>"
+          end
+        end,
+        silent = true,
+        expr = true,
+        desc = "Scroll Backward",
+        mode = { "i", "n", "s" },
+      },
     },
   },
 
   { "nvim-tree/nvim-web-devicons", lazy = true },
-  { "MunifTanjim/nui.nvim",        lazy = true },
+  { "MunifTanjim/nui.nvim", lazy = true },
 }

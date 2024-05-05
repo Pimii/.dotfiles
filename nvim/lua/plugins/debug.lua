@@ -271,35 +271,6 @@ return {
     dap_python.setup("~/.virtualenvs/debugpy/bin/python")
     dap_python.test_runner = "pytest"
 
-    -- bash
-    dap.adapters.bashdb = {
-      type = "executable",
-      command = "bashdb",
-      name = "bashdb",
-    }
-
-    dap.configurations.sh = {
-      {
-        type = "bashdb",
-        request = "launch",
-        name = "Launch file",
-        showDebugOutput = true,
-        pathBashdb = "/bin/bashdb",
-        pathBashdbLib = "/usr/share/bashdb",
-        trace = true,
-        file = "${file}",
-        program = "${file}",
-        cwd = "${workspaceFolder}",
-        pathCat = "cat",
-        pathBash = "/bin/bash",
-        pathMkfifo = "mkfifo",
-        pathPkill = "pkill",
-        args = {},
-        env = {},
-        terminalKind = "integrated",
-      },
-    }
-
     vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
 
     for name, sign in pairs(require("config.constants").icons.dap) do
