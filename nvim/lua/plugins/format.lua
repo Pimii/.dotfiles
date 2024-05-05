@@ -37,11 +37,12 @@ return {
       lua = { "stylua" },
       c = { "clang_format" },
       cpp = { "clang_format" },
-      sh = { "shfmt" },
+      sh = { "shellcheck" },
       json = { "jq" },
       zig = { "zigfmt" },
       python = { "isort", "black" },
-      javascript = { { "prettierd", "prettier" } },
+      javascript = { "prettierd" },
+      gdscript = { "gdformat" },
     },
     format_on_save = function(bufnr)
       if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
@@ -50,11 +51,7 @@ return {
       return { timeout_ms = 500, lsp_fallback = true }
     end,
     -- Customize formatters
-    formatters = {
-      shfmt = {
-        prepend_args = { "-i", "2" },
-      },
-    },
+    formatters = {},
   },
   init = function()
     vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"

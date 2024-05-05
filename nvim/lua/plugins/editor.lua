@@ -489,10 +489,6 @@ return {
         { "<F2>",      function() require("harpoon"):list():select(2) end },
         { "<F3>",      function() require("harpoon"):list():select(3) end },
         { "<F4>",      function() require("harpoon"):list():select(4) end },
-        { "<F5>",      function() require("harpoon"):list():select(5) end },
-        { "<F6>",      function() require("harpoon"):list():select(6) end },
-        { "<F7>",      function() require("harpoon"):list():select(7) end },
-        { "<F8>",      function() require("harpoon"):list():select(8) end },
 
         -- Toggle previous & next buffers stored within Harpoon list
         { "<C-q>",     function() require("harpoon"):list():prev() end },

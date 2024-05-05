@@ -66,7 +66,9 @@ end
 
 local merge = function(first_table, second_table)
   local res = first_table
-  for k, v in pairs(second_table) do res[k] = v end
+  for k, v in pairs(second_table) do
+    res[k] = v
+  end
   return res
 end
 
@@ -85,7 +87,7 @@ function Lsp.formatter(opts)
       local clients = Lsp.get_clients(merge(filter, { bufnr = buf }))
       local ret = vim.tbl_filter(function(client)
         return client.supports_method("textDocument/formatting")
-            or client.supports_method("textDocument/rangeFormatting")
+          or client.supports_method("textDocument/rangeFormatting")
       end, clients)
       return vim.tbl_map(function(client)
         return client.name
@@ -118,16 +120,68 @@ function KeyMap.get()
     return KeyMap._keys
   end
   KeyMap._keys = {
-    { "<leader>cl", "<cmd>LspInfo<cr>",                                                                     desc = "Lsp Info" },
-    { "gd",         function() require("telescope.builtin").lsp_definitions({ reuse_win = true }) end,      desc = "Goto Definition",       has = "definition" },
-    { "gr",         "<cmd>Telescope lsp_references<cr>",                                                    desc = "References" },
-    { "gD",         vim.lsp.buf.declaration,                                                                desc = "Goto Declaration" },
-    { "gI",         function() require("telescope.builtin").lsp_implementations({ reuse_win = true }) end,  desc = "Goto Implementation" },
-    { "gy",         function() require("telescope.builtin").lsp_type_definitions({ reuse_win = true }) end, desc = "Goto T[y]pe Definition" },
-    { "K",          vim.lsp.buf.hover,                                                                      desc = "Hover" },
-    { "gK",         vim.lsp.buf.signature_help,                                                             desc = "Signature Help",        has = "signatureHelp" },
-    { "<c-k>",      vim.lsp.buf.signature_help,                                                             mode = "i",                     desc = "Signature Help", has = "signatureHelp" },
-    { "<leader>ca", vim.lsp.buf.code_action,                                                                desc = "Code Action",           mode = { "n", "v" },     has = "codeAction" },
+    {
+      "<leader>cl",
+      "<cmd>LspInfo<cr>",
+      desc = "Lsp Info",
+    },
+    {
+      "gd",
+      function()
+        require("telescope.builtin").lsp_definitions({ reuse_win = true })
+      end,
+      desc = "Goto Definition",
+      has = "definition",
+    },
+    {
+      "gr",
+      "<cmd>Telescope lsp_references<cr>",
+      desc = "References",
+    },
+    {
+      "gD",
+      vim.lsp.buf.declaration,
+      desc = "Goto Declaration",
+    },
+    {
+      "gI",
+      function()
+        require("telescope.builtin").lsp_implementations({ reuse_win = true })
+      end,
+      desc = "Goto Implementation",
+    },
+    {
+      "gy",
+      function()
+        require("telescope.builtin").lsp_type_definitions({ reuse_win = true })
+      end,
+      desc = "Goto T[y]pe Definition",
+    },
+    {
+      "K",
+      vim.lsp.buf.hover,
+      desc = "Hover",
+    },
+    {
+      "gK",
+      vim.lsp.buf.signature_help,
+      desc = "Signature Help",
+      has = "signatureHelp",
+    },
+    {
+      "<c-k>",
+      vim.lsp.buf.signature_help,
+      mode = "i",
+      desc = "Signature Help",
+      has = "signatureHelp",
+    },
+    {
+      "<leader>ca",
+      vim.lsp.buf.code_action,
+      desc = "Code Action",
+      mode = { "n", "v" },
+      has = "codeAction",
+    },
     {
       "<leader>cA",
       function()
@@ -142,7 +196,7 @@ function KeyMap.get()
       end,
       desc = "Source Action",
       has = "codeAction",
-    }
+    },
   }
   KeyMap._keys[#KeyMap._keys + 1] = {
     "<leader>cr",
@@ -247,13 +301,16 @@ return {
                 callSnippet = "Replace",
               },
               diagnostics = {
-                globals = { 'vim' },
+                globals = { "vim" },
               },
             },
           },
         },
         clangd = {},
-        zls = {}
+        bashls = {},
+        gdscript = {},
+        zls = {},
+        pyright = {},
       },
       -- you can do any additional lsp server setup here
       -- return true if you don't want this server to be setup with lspconfig
@@ -265,6 +322,11 @@ return {
         -- end,
         -- Specify * to use this function as a fallback for any server
         -- ["*"] = function(server, opts) end,
+
+        -- Fix clangd offset encoding
+        clangd = function(_, opts)
+          opts.capabilities.offsetEncoding = { "utf-16" }
+        end,
       },
     },
     config = function(_, opts)
@@ -303,14 +365,14 @@ return {
 
       if type(opts.diagnostics.virtual_text) == "table" and opts.diagnostics.virtual_text.prefix == "icons" then
         opts.diagnostics.virtual_text.prefix = vim.fn.has("nvim-0.10.0") == 0 and "●"
-            or function(diagnostic)
-              local icons = require("config.constants").icons.diagnostics
-              for d, icon in pairs(icons) do
-                if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
-                  return icon
-                end
+          or function(diagnostic)
+            local icons = require("config.constants").icons.diagnostics
+            for d, icon in pairs(icons) do
+              if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
+                return icon
               end
             end
+          end
       end
 
       vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
