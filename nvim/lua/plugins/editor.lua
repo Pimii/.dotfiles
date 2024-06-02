@@ -71,7 +71,7 @@ return {
         desc = "Explorer NeoTree (cwd)",
       },
       { "<leader>e", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
-      { "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)",      remap = true },
+      { "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
       {
         "<leader>ge",
         function()
@@ -135,7 +135,7 @@ return {
       local events = require("neo-tree.events")
       opts.event_handlers = opts.event_handlers or {}
       vim.list_extend(opts.event_handlers, {
-        { event = events.FILE_MOVED,   handler = on_move },
+        { event = events.FILE_MOVED, handler = on_move },
         { event = events.FILE_RENAMED, handler = on_move },
       })
       require("neo-tree").setup(opts)
@@ -155,7 +155,13 @@ return {
     cmd = "Spectre",
     opts = { open_cmd = "noswapfile vnew" },
     keys = {
-      { "<leader>sr", function() require("spectre").open() end, desc = "Replace in files (Spectre)" },
+      {
+        "<leader>sr",
+        function()
+          require("spectre").open()
+        end,
+        desc = "Replace in files (Spectre)",
+      },
     },
   },
   {
@@ -164,11 +170,46 @@ return {
     vscode = true,
     opts = {},
     keys = {
-      { "s",     mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
-      { "S",     mode = { "n", "o", "x" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
-      { "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
-      { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
+      {
+        "s",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").jump()
+        end,
+        desc = "Flash",
+      },
+      {
+        "S",
+        mode = { "n", "o", "x" },
+        function()
+          require("flash").treesitter()
+        end,
+        desc = "Flash Treesitter",
+      },
+      {
+        "r",
+        mode = "o",
+        function()
+          require("flash").remote()
+        end,
+        desc = "Remote Flash",
+      },
+      {
+        "R",
+        mode = { "o", "x" },
+        function()
+          require("flash").treesitter_search()
+        end,
+        desc = "Treesitter Search",
+      },
+      {
+        "<c-s>",
+        mode = { "c" },
+        function()
+          require("flash").toggle()
+        end,
+        desc = "Toggle Flash Search",
+      },
     },
   },
   {
@@ -187,31 +228,47 @@ return {
         "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>",
         desc = "switch buffer",
       },
-      { "<leader>/",       '<cmd>Telescope live_grep<cr>',                                desc = "grep (root dir)" },
-      { "<leader>:",       "<cmd>Telescope command_history<cr>",                          desc = "command history" },
-      { "<leader><space>", '<cmd>Telescope find_files<cr>',                               desc = "find files (root dir)" },
+      { "<leader>/", "<cmd>Telescope live_grep<cr>", desc = "grep (root dir)" },
+      { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "command history" },
+      {
+        "<leader><space>",
+        "<cmd>Telescope find_files<cr>",
+        desc = "find files (root dir)",
+      },
       -- find
-      { "<leader>fb",      "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "buffers" },
-      { "<leader>fc",      '<cmd>Telescope config_files<cr>',                             desc = "find config file" },
-      { "<leader>ff",      '<cmd>Telescope find_files<cr>',                               desc = "find files (root dir)" },
-      { "<leader>fr",      "<cmd>Telescope oldfiles<cr>",                                 desc = "recent" },
+      { "<leader>fb", "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "buffers" },
+      { "<leader>fc", "<cmd>Telescope config_files<cr>", desc = "find config file" },
+      {
+        "<leader>ff",
+        "<cmd>Telescope find_files<cr>",
+        desc = "find files (root dir)",
+      },
+      { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "recent" },
       -- git
-      { "<leader>gc",      "<cmd>Telescope git_commits<cr>",                              desc = "commits" },
-      { "<leader>gs",      "<cmd>Telescope git_status<cr>",                               desc = "status" },
+      { "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "commits" },
+      { "<leader>gs", "<cmd>Telescope git_status<cr>", desc = "status" },
       -- search
-      { '<leader>s"',      "<cmd>Telescope registers<cr>",                                desc = "registers" },
-      { "<leader>sa",      "<cmd>Telescope autocommands<cr>",                             desc = "auto commands" },
-      { "<leader>sb",      "<cmd>Telescope current_buffer_fuzzy_find<cr>",                desc = "buffer" },
+      { '<leader>s"', "<cmd>Telescope registers<cr>", desc = "registers" },
+      { "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "auto commands" },
+      { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "buffer" },
       -- { "<leader>sc",      "<cmd>Telescope command_history<cr>",                          desc = "command history" },
-      { "<leader>sc",      "<cmd>Telescope commands<cr>",                                 desc = "commands" },
+      { "<leader>sc", "<cmd>Telescope commands<cr>", desc = "commands" },
       -- { "<leader>sd",      "<cmd>Telescope diagnostics bufnr=0<cr>",                      desc = "document diagnostics" },
-      { "<leader>sd",      "<cmd>Telescope diagnostics<cr>",                              desc = "workspace diagnostics" },
-      { "<leader>sh",      "<cmd>Telescope help_tags<cr>",                                desc = "help pages" },
-      { "<leader>sh",      "<cmd>Telescope highlights<cr>",                               desc = "search highlight groups" },
-      { "<leader>sk",      "<cmd>Telescope keymaps<cr>",                                  desc = "key maps" },
-      { "<leader>sm",      "<cmd>Telescope man_pages<cr>",                                desc = "man pages" },
-      { "<leader>sm",      "<cmd>Telescope marks<cr>",                                    desc = "jump to mark" },
-      { "<leader>so",      "<cmd>Telescope vim_options<cr>",                              desc = "options" },
+      {
+        "<leader>sd",
+        "<cmd>Telescope diagnostics<cr>",
+        desc = "workspace diagnostics",
+      },
+      { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "help pages" },
+      {
+        "<leader>sh",
+        "<cmd>Telescope highlights<cr>",
+        desc = "search highlight groups",
+      },
+      { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "key maps" },
+      { "<leader>sm", "<cmd>Telescope man_pages<cr>", desc = "man pages" },
+      { "<leader>sm", "<cmd>Telescope marks<cr>", desc = "jump to mark" },
+      { "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "options" },
       {
         "<leader>sw",
         function()
@@ -277,9 +334,9 @@ return {
             mappings = {
               i = {
                 ["<c-d>"] = actions.delete_buffer + actions.move_to_top,
-              }
-            }
-          }
+              },
+            },
+          },
         },
       }
     end,
@@ -310,9 +367,13 @@ return {
         map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
         map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
         map("n", "<leader>ghp", gs.preview_hunk, "Preview Hunk")
-        map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
+        map("n", "<leader>ghb", function()
+          gs.blame_line({ full = true })
+        end, "Blame Line")
         map("n", "<leader>ghd", gs.diffthis, "Diff This")
-        map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
+        map("n", "<leader>ghD", function()
+          gs.diffthis("~")
+        end, "Diff This ~")
         map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
       end,
     },
@@ -382,10 +443,10 @@ return {
     cmd = { "TroubleToggle", "Trouble" },
     opts = { use_diagnostic_signs = true },
     keys = {
-      { "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>",  desc = "Document Diagnostics (Trouble)" },
+      { "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "Document Diagnostics (Trouble)" },
       { "<leader>xX", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics (Trouble)" },
-      { "<leader>xL", "<cmd>TroubleToggle loclist<cr>",               desc = "Location List (Trouble)" },
-      { "<leader>xQ", "<cmd>TroubleToggle quickfix<cr>",              desc = "Quickfix List (Trouble)" },
+      { "<leader>xL", "<cmd>TroubleToggle loclist<cr>", desc = "Location List (Trouble)" },
+      { "<leader>xQ", "<cmd>TroubleToggle quickfix<cr>", desc = "Quickfix List (Trouble)" },
       {
         "[q",
         function()
@@ -438,7 +499,7 @@ return {
       settings = {
         save_on_toggle = true,
         save_on_ui_cloase = true,
-      }
+      },
     },
     config = function(_, opts)
       require("harpoon"):setup(opts)
@@ -456,43 +517,128 @@ return {
           })
         end
 
-        require("telescope.pickers").new({}, {
-          prompt_title = "Harpoon",
-          finder = finder(),
-          previewer = false,
-          sorter = require("telescope.config").values.generic_sorter({}),
-          layout_config = {
-            height = 0.4,
-            width = 0.5,
-            prompt_position = "top",
-            preview_cutoff = 120,
-          },
-          attach_mappings = function(prompt_bufnr, map)
-            map("i", "<C-d>", function()
-              local state = require("telescope.actions.state")
-              local selected_entry = state.get_selected_entry()
-              local current_picker = state.get_current_picker(prompt_bufnr)
+        require("telescope.pickers")
+          .new({}, {
+            prompt_title = "Harpoon",
+            finder = finder(),
+            previewer = false,
+            sorter = require("telescope.config").values.generic_sorter({}),
+            layout_config = {
+              height = 0.4,
+              width = 0.5,
+              prompt_position = "top",
+              preview_cutoff = 120,
+            },
+            attach_mappings = function(prompt_bufnr, map)
+              map("i", "<C-d>", function()
+                local state = require("telescope.actions.state")
+                local selected_entry = state.get_selected_entry()
+                local current_picker = state.get_current_picker(prompt_bufnr)
 
-              table.remove(harpoon_files.items, selected_entry.index)
-              current_picker:refresh(finder())
-            end)
-            return true
-          end,
-        }):find()
+                table.remove(harpoon_files.items, selected_entry.index)
+                current_picker:refresh(finder())
+              end)
+              return true
+            end,
+          })
+          :find()
       end
 
       local mappings = {
-        { "<leader>a", function() require("harpoon"):list():add() end },
-        { "<C-e>",     function() toggle_telescope(require("harpoon"):list()) end },
+        {
+          "<leader>a",
+          function()
+            require("harpoon"):list():add()
+          end,
+          desc = "Harpoon: Add current file to the list",
+        },
+        {
+          "<C-e>",
+          function()
+            toggle_telescope(require("harpoon"):list())
+          end,
+          desc = "Harpoon: Open the file list",
+        },
 
-        { "<F1>",      function() require("harpoon"):list():select(1) end },
-        { "<F2>",      function() require("harpoon"):list():select(2) end },
-        { "<F3>",      function() require("harpoon"):list():select(3) end },
-        { "<F4>",      function() require("harpoon"):list():select(4) end },
+        {
+          "<F1>",
+          function()
+            require("harpoon"):list():select(1)
+          end,
+          desc = "Harpoon: Open file -- 1",
+        },
+        {
+          "<F2>",
+          function()
+            require("harpoon"):list():select(2)
+          end,
+          desc = "Harpoon: Open file -- 2",
+        },
+        {
+          "<F3>",
+          function()
+            require("harpoon"):list():select(3)
+          end,
+          desc = "Harpoon: Open file -- 3",
+        },
+        {
+          "<F4>",
+          function()
+            require("harpoon"):list():select(4)
+          end,
+          desc = "Harpoon: Open file -- 4",
+        },
+        {
+          "<F5>",
+          function()
+            require("harpoon"):list():select(5)
+          end,
+          desc = "Harpoon: Open file -- 5",
+        },
+        {
+          "<F6>",
+          function()
+            require("harpoon"):list():select(6)
+          end,
+          desc = "Harpoon: Open file -- 6",
+        },
+        {
+          "<F7>",
+          function()
+            require("harpoon"):list():select(7)
+          end,
+          desc = "Harpoon: Open file -- 7",
+        },
+        {
+          "<F8>",
+          function()
+            require("harpoon"):list():select(8)
+          end,
+          desc = "Harpoon: Open file -- 8",
+        },
+        {
+          "<F9>",
+          function()
+            require("harpoon"):list():select(9)
+          end,
+          desc = "Harpoon: Open file -- 9",
+        },
 
         -- Toggle previous & next buffers stored within Harpoon list
-        { "<C-q>",     function() require("harpoon"):list():prev() end },
-        { "<C-s>",     function() require("harpoon"):list():next() end },
+        {
+          "<C-q>",
+          function()
+            require("harpoon"):list():prev()
+          end,
+          desc = "Harpoon: Open file -- Previous",
+        },
+        {
+          "<C-s>",
+          function()
+            require("harpoon"):list():next()
+          end,
+          desc = "Harpoon: Open file -- Next",
+        },
       }
       return vim.list_extend(mappings, keys)
     end,

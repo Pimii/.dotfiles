@@ -45,15 +45,15 @@ key_map("v", "<", "<gv")
 key_map("v", ">", ">gv")
 
 -- Location and quickfix list
-key_map("n", "<leader>xl", "<cmd>lopen<cr>")
-key_map("n", "<leader>xq", "<cmd>copen<cr>")
+vim.api.nvim_set_keymap("n", "<leader>xl", "<cmd>lopen<cr>", { noremap = true, silent = true, desc = "Location list" })
+vim.api.nvim_set_keymap("n", "<leader>xq", "<cmd>copen<cr>", { noremap = true, silent = true, desc = "Quickfix list" })
 
-map("n", "[q", vim.cmd.cprev)
-map("n", "]q", vim.cmd.cnext)
+map("n", "[q", vim.cmd.cprev, { desc = "Display previous error" })
+map("n", "]q", vim.cmd.cnext, { desc = "Display next error" })
 
 map("n", "<leader>th", function()
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-end)
+end, { desc = "Toggle inlay hints" })
 
 -- Diagnostic
 local diagnostic_goto = function(next, severity)
@@ -64,9 +64,9 @@ local diagnostic_goto = function(next, severity)
   end
 end
 map("n", "<leader>cd", vim.diagnostic.open_float)
-map("n", "]d", diagnostic_goto(true))
-map("n", "[d", diagnostic_goto(false))
-map("n", "]e", diagnostic_goto(true, "ERROR"))
-map("n", "[e", diagnostic_goto(false, "ERROR"))
-map("n", "]w", diagnostic_goto(true, "WARN"))
-map("n", "[w", diagnostic_goto(false, "WARN"))
+map("n", "]d", diagnostic_goto(true), { desc = "Go to next diagnostic" })
+map("n", "[d", diagnostic_goto(false), { desc = "Go to previous diagnostic" })
+map("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Go to next error diagnostic" })
+map("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Go to previous error diagnostic" })
+map("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Go to next warning diagnostic" })
+map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Go to previous warning diagnostic" })
