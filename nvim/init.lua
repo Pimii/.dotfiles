@@ -13,6 +13,7 @@ local path_package = vim.fn.stdpath('data') .. '/site/'
 
 require('config.options')
 require('config.keymaps')
+require('config.editor')
 
 require('mini.deps').setup({ path = { package = path_package } })
 
