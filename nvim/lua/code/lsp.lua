@@ -1,5 +1,7 @@
 MiniDeps.add('neovim/nvim-lspconfig')
--- require'lspconfig'.pyright.setup{}
+
+MiniDeps.add('hrsh7th/cmp-nvim-lsp')
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 local key_mapping = function()
   vim.keymap.set('n', 'gd', function()
@@ -43,8 +45,8 @@ local key_mapping = function()
   end, { noremap = true, silent = true, desc = 'Code action' })
 end
 
-vim.lsp.enable('clangd')
-vim.lsp.config('clangd', {
+require('lspconfig').clangd.setup({
+  capabilities = capabilities,
   on_attach = function(_, bufnr)
     vim.api.nvim_buf_create_user_command(bufnr, 'LspClangdSwitchSourceHeader', function()
       switch_source_header(bufnr)
@@ -58,22 +60,22 @@ vim.lsp.config('clangd', {
   end,
 })
 
-vim.lsp.enable('bashls')
-vim.lsp.config('bashls', {
+require('lspconfig').bashls.setup({
+  capabilities = capabilities,
   on_attach = function()
     key_mapping()
   end,
 })
 
-vim.lsp.enable('basedpyright')
-vim.lsp.config('basedpyright', {
+require('lspconfig').basedpyright.setup({
+  capabilities = capabilities,
   on_attach = function()
     key_mapping()
   end,
 })
 
-vim.lsp.enable('lua_ls')
-vim.lsp.config('lua_ls', {
+require('lspconfig').lua_ls.setup({
+  capabilities = capabilities,
   on_init = function(client)
     if client.workspace_folders then
       local path = client.workspace_folders[1].name
@@ -109,8 +111,8 @@ vim.lsp.config('lua_ls', {
   },
 })
 
-vim.lsp.enable('zls')
-vim.lsp.config('zls', {
+require('lspconfig').zls.setup({
+  capabilities = capabilities,
   on_attach = function()
     key_mapping()
   end,
